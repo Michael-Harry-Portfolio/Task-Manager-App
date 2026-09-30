@@ -1,12 +1,19 @@
+import "dotenv/config";
 import express from "express";
 import { testDatabaseConnection } from "./db/database";
+import authRoutes from "./routes/auth.routes";
+import taskRoutes from "./routes/task.routes";
+import subtaskRoutes from "./routes/subtasks.routes";   
+
 
 const app = express();
 
 const PORT = 3000;
 
 app.use(express.json());
-
+app.use("/api/tasks", taskRoutes);
+app.use("/api/tasks", subtaskRoutes);
+app.use("/api/auth", authRoutes);
 app.get("/", (req, res) => {
   res.json({
     message: "Task Manager API is running",
