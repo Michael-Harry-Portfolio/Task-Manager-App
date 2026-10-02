@@ -230,3 +230,57 @@ export async function updateSubtask(
     });
   }
 }
+export async function deleteSubtask(
+  req: AuthRequest,
+  res: Response
+) {
+  try {
+    if (!req.userId) {
+      return res.status(401).json({
+        message: 'Unauthorized',
+      });
+    }
+
+    const { taskId, subtaskId } = req.params;
+
+    // Make sure the task belongs to the authenticated user
+    const taskResult = await pool.query(
+      `SELECT id
+       FROM tasks
+       WHERE id = $1 AND user_id = $2`,
+      [taskId, req.userId]
+    );
+
+    if (taskResult.rows.length === 0) {
+      return res.status(404).json({
+        message: 'Task not found',
+      });
+    }
+
+    // Make sure the subtask belongs to this task
+    const subtaskResult = await pool.query(
+      `DELETE FROM subtasks
+       WHERE id = $1 AND task_id = $2
+       RETURNING *`,
+      [subtaskId, taskId]
+    );
+
+    if (subtaskResult.rows.length === 0) {
+      return res.status(404).json({
+        message: 'Subtask not found',
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Subtask deleted successfully',
+      subtask: subtaskResult.rows[0],
+    });
+
+  } catch (error) {
+    console.error('Delete subtask error:', error);
+
+    return res.status(500).json({
+      message: 'Server error while deleting subtask',
+    });
+  }
+}
