@@ -47,4 +47,5 @@ app.*.map.json
 .env
 .env.local
 .env.*.local
-nodule_modules/
+nodule_modules/node_modules/
+.env
