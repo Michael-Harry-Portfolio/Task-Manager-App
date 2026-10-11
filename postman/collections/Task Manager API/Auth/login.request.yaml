@@ -1,4 +1,11 @@
 $kind: http-request
-url: ""
-method: GET
+url: http://localhost:3000/api/auth/login
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "email": "test5@example.com",
+      "password": "TestPassword123!"
+    }
 order: 125241986895841
