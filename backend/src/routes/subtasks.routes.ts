@@ -1,5 +1,6 @@
 import { Router } from 'express';
-
+import { validate } from '../middleware/validation.middleware';
+import {createSubtaskValidator } from '../validators/subtask.validators';
 import {
   createSubtask,
   getSubtasks,
@@ -22,6 +23,8 @@ const router = Router();
 router.post(
   '/:taskId/subtasks',
   authenticateToken,
+  createSubtaskValidator,
+  validate,
   createSubtask
 );
 

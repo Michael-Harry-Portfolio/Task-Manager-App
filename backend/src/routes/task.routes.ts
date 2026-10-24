@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import { createTask, getTasks, getTaskById, updateTask,deleteTask,} from '../controllers/task.controller';
 import { authenticateToken } from '../middleware/auth.middleware';
+import { createTaskValidator } from '../validators/task.validators';
+import { validate } from '../middleware/validation.middleware';
+
+
 
 console.log("createTask:", typeof createTask);
 console.log("getTasks:", typeof getTasks);
@@ -11,7 +15,7 @@ console.log("authenticateToken:", typeof authenticateToken);
 
 const router = Router();
 
-router.post('/', authenticateToken, createTask);
+router.post('/', authenticateToken, createTaskValidator, validate, createTask);
 router.get('/', authenticateToken, getTasks);
 router.get('/:id', authenticateToken, getTaskById);
 router.patch('/:id', authenticateToken, updateTask);

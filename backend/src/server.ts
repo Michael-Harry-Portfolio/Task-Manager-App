@@ -4,7 +4,10 @@ import { testDatabaseConnection } from "./db/database";
 import authRoutes from "./routes/auth.routes";
 import taskRoutes from "./routes/task.routes";
 import subtaskRoutes from "./routes/subtasks.routes";   
-
+import labelRoutes from "./routes/labels.routes";
+import taskLabelRoutes from "./routes/taskLabels.routes";
+import reminderRoutes from "./routes/reminders.routes";
+import taskPreferencesRoutes from "./routes/taskPreferences.routes";
 
 const app = express();
 
@@ -14,6 +17,10 @@ app.use(express.json());
 app.use("/api/tasks", taskRoutes);
 app.use("/api/tasks", subtaskRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/labels", labelRoutes);
+app.use("/api/tasks",taskLabelRoutes);
+app.use("/api/tasks", reminderRoutes);
+app.use("/api/preferences", taskPreferencesRoutes); 
 app.get("/", (req, res) => {
   res.json({
     message: "Task Manager API is running",
